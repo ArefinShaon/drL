@@ -17,15 +17,18 @@ def random_pick(some_list, probabilities):
 
 
 def reward_fun(delay, max_delay, unfinish_indi):
-
-    # still use reward, but use the negative value
+    # Base penalty for unfinished tasks
     penalty = - max_delay * 2
+    base_reward = - delay  # Base reward for delay
 
+    # Reward shaping logic
     if unfinish_indi:
         reward = penalty
     else:
-        reward = - delay
-
+        # Shaping term to incentivize reducing delay
+        shaping_bonus = 10 / (1 + delay)  # Bonus decreases as delay increases
+        reward = base_reward + shaping_bonus
+        
     return reward
 
 
